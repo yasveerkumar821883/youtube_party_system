@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WebSocket Test</title>
+</head>
+<body>
+
+<h2>YouTube Watch Party WebSocket Test</h2>
+
+<button onclick="connect()">Connect</button>
+<button onclick="sendMessage()">Send Play Event</button>
+
+<pre id="messages"></pre>
+
+<script>
+    let socket;
+
+    function connect() {
+        const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2IiwidXNlcm5hbWUiOiJwYXJ0aWNpcGFudDEiLCJleHAiOjE3ODg4NTU1MTF9.OYYLQf0AiCcIW2KallgQzmqOY4Jf2yX2m2sU8f4GT3s";
+
+        socket = new WebSocket(
+        `ws://127.0.0.1:8000/ws/HMDKAJ?token=${token}`
+    );
+
+        socket.onopen = function () {
+            addMessage("Connected to room HMDKAJ");
+        };
+
+        socket.onmessage = function (event) {
+            addMessage("Received: " + event.data);
+        };
+
+        socket.onclose = function () {
+            addMessage("Disconnected");
+        };
+
+        socket.onerror = function () {
+            addMessage("WebSocket error");
+        };
+    }
+
+    function sendMessage() {
+        if (!socket || socket.readyState !== WebSocket.OPEN) {
+            addMessage("Connect first");
+            return;
+        }
+
+        socket.send(JSON.stringify({
+            "event": "play",
+            "room_code": "HMDKAJ",
+            "current_time": 10
+        }));
+    }
+
+    function addMessage(message) {
+        document.getElementById("messages").textContent +=
+            message + "\n";
+    }
+</script>
+
+</body>
+</html>
