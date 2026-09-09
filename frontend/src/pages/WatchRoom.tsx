@@ -19,9 +19,7 @@ export default function WatchRoom() {
   const [error, setError] = useState("");
   const [connected, setConnected] = useState(false);
 
-  // --------------------------------------------------
   // Chat
-  // --------------------------------------------------
 
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
   const [chatInput, setChatInput] = useState("");
@@ -46,9 +44,8 @@ export default function WatchRoom() {
   // Last known player position.
   const lastTimeRef = useRef(0);
 
-  // --------------------------------------------------
   // RBAC
-  // --------------------------------------------------
+
 
   const canControl =
     myRole === "HOST" ||
@@ -57,9 +54,7 @@ export default function WatchRoom() {
   const isHost =
     myRole === "HOST";
 
-  // --------------------------------------------------
   // Logout
-  // --------------------------------------------------
 
   function logout() {
     socketRef.current?.close();
@@ -70,9 +65,8 @@ export default function WatchRoom() {
     navigate("/login");
   }
 
-  // --------------------------------------------------
+
   // Get current user ID from JWT
-  // --------------------------------------------------
 
   function getCurrentUserIdFromToken(): number | null {
     const token = localStorage.getItem("access_token");
@@ -92,9 +86,7 @@ export default function WatchRoom() {
     }
   }
 
-  // --------------------------------------------------
   // Load participants
-  // --------------------------------------------------
 
   async function loadParticipants() {
     if (!roomCode) {
@@ -154,9 +146,7 @@ export default function WatchRoom() {
     }
   }
 
-  // --------------------------------------------------
   // Load participants when room changes
-  // --------------------------------------------------
 
   useEffect(() => {
     if (roomCode) {
@@ -164,9 +154,7 @@ export default function WatchRoom() {
     }
   }, [roomCode]);
 
-  // --------------------------------------------------
   // Load saved room/video
-  // --------------------------------------------------
 
   useEffect(() => {
     async function loadRoom() {
@@ -221,9 +209,7 @@ export default function WatchRoom() {
     loadRoom();
   }, [roomCode]);
 
-  // --------------------------------------------------
   // Update participant role
-  // --------------------------------------------------
 
   async function updateParticipantRole(
     userId: number,
@@ -283,9 +269,7 @@ export default function WatchRoom() {
     }
   }
 
-  // --------------------------------------------------
   // WebSocket
-  // --------------------------------------------------
 
   useEffect(() => {
     const token =
@@ -308,10 +292,7 @@ export default function WatchRoom() {
       );
     socketRef.current = socket;
 
-    // ------------------------------------------------
     // WebSocket connected
-    // ------------------------------------------------
-
     socket.onopen = () => {
       if (!isActive) {
         return;
