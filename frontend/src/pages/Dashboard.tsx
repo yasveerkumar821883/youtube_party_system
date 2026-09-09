@@ -160,8 +160,8 @@ export default function Dashboard() {
               <h2>WEB3TASK</h2>
 
               <p>
-                Building modern web solutions
-                for the next generation.
+               We help startups scale with strong SaaS, conversion-ready dashboards
+                and integrated tech, AI, design, and automation solutions.
               </p>
             </div>
 

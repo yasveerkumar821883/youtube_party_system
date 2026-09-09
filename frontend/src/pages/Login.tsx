@@ -1,4 +1,4 @@
-import {type FormEvent, useState } from "react";
+import { type FormEvent, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../api/client";
 
@@ -28,59 +28,76 @@ export default function Login() {
     } catch (error: any) {
       setError(
         error.response?.data?.detail ||
-        "Login failed"
+          "Login failed"
       );
     }
   }
 
   return (
     <div className="auth-page">
-      {/* WEB3TASK Header */}
 
+      {/* Header */}
       <header className="auth-header">
-        <div className="auth-brand"> WEB3TASK </div>
+        <div className="auth-brand">
+          WEB3TASK
+        </div>
       </header>
 
-      <div className="auth-card">
-        <h1 style={{ color: "white" }}>YOUTUBE WATCH PARTY</h1>
+      {/* Login */}
+      <main className="auth-main">
+        <div className="auth-card">
 
-        <p>Sign in to join your watch party</p>
+          <h1 style={{ color: "white" }}>
+            YOUTUBE WATCH PARTY
+          </h1>
 
-        {error && (
-          <div className="error">
-            {error}
-          </div>
-        )}
+          <p>
+            Sign in to join your watch party
+          </p>
 
-        <form onSubmit={handleSubmit}>
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
+          {error && (
+            <div className="error">
+              {error}
+            </div>
+          )}
 
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
+          <form onSubmit={handleSubmit}>
 
-          <button type="submit">
-            Login
-          </button>
-        </form>
+            <input
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) =>
+                setEmail(e.target.value)
+              }
+              required
+            />
 
-        <p>
-          Don't have an account?{" "}
-          <Link to="/register">
-            Register
-          </Link>
-        </p>
-      </div>
+            <input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) =>
+                setPassword(e.target.value)
+              }
+              required
+            />
+
+            <button type="submit">
+              Login
+            </button>
+
+          </form>
+
+          <p>
+            Don't have an account?{" "}
+            <Link to="/register">
+              Register
+            </Link>
+          </p>
+
+        </div>
+      </main>
     </div>
   );
 }

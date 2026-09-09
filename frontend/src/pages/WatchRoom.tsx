@@ -27,7 +27,7 @@ export default function WatchRoom() {
   const [chatInput, setChatInput] = useState("");
 
   // Default video while room data is loading
-  const [videoId, setVideoId] = useState("dQw4w9WgXcQ");
+  const [videoId, setVideoId] = useState("t7D-QXWKyi0");
 
   const [youtubeUrl, setYoutubeUrl] = useState("");
   const [myRole, setMyRole] = useState("");
@@ -1060,7 +1060,7 @@ export default function WatchRoom() {
 
           <p>
             Your Role:{" "}
-            <strong>
+            <strong style={{ color: "white" }}>
               {myRole || "Loading..."}
             </strong>
           </p>
@@ -1070,8 +1070,10 @@ export default function WatchRoom() {
             style={{
               padding: "10px 18px",
               background: "#dc3545",
+              backgroundColor: "#244e39",
               color: "white",
-              border: "none",
+              border: "blue",
+              borderBottom: "1.5px solid #dc3545",
               borderRadius: "6px",
               cursor: "pointer",
               marginTop: "10px",
@@ -1129,7 +1131,7 @@ export default function WatchRoom() {
               />
 
               <button type="submit">
-                🎬 Change Video
+                Change Video
               </button>
 
             </form>
@@ -1148,7 +1150,7 @@ export default function WatchRoom() {
           {!canControl && myRole !== "" && (
             <div className="viewer-notice">
               🔒{" "}
-              <span>
+              <span style={{color:"darkviolet"}}>
                 You are watching as{" "}
                 <strong>
                   {myRole}
@@ -1269,6 +1271,7 @@ export default function WatchRoom() {
                             padding: "6px 8px",
                             borderRadius: "5px",
                             cursor: "pointer",
+                            color : "black"
                           }}
                         >
 

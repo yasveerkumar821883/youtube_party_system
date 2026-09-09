@@ -1,21 +1,16 @@
-/* =========================================================
-   YOUTUBE WATCH PARTY
-   Premium Dark Streaming UI
-========================================================= */
-
 :root {
   --bg: #d7d9dc;
   --bg-2: #0d0f14;
-  --surface: #e7e7ed;
+  --surface: #d5d6dd;
   --surface-2: #8c91ac;
   --surface-3: #1d212b;
 
-  --border: rgb(189 173 173 / 0.08);
-  --border-hover: rgba(255, 255, 255, 0.14);
+  --border: rgb(103 64 64 / 0.08);
+  --border-hover: rgb(205 151 151 / 0.14);
 
   --text: #202e2e;
   --text-2: #ffffff;
-  --text-3: #58586e;
+  --text-3: #313137;
 
   --primary: #7657ff;
   --primary-hover: #42666c;
@@ -959,7 +954,7 @@ select:focus {
 }
 
 .auth-card a:hover {
-  color: #b9adff;
+  color: #a99fe4;
 }
 
 /* =========================================================
@@ -974,7 +969,7 @@ select:focus {
   background:
     radial-gradient(
       circle at top right,
-      rgb(204 194 194),
+      rgb(218 204 204),
       transparent 35%
     ),
     var(--bg);
@@ -1048,11 +1043,14 @@ select:focus {
 .dashboard-card form {
   display: flex;
 
-  gap: 9px;
+  gap: 8px;
 }
 
 .dashboard-card form input {
   flex: 1;
+  border: #8c91ac solid 1px;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
 }
 
 .dashboard-card form button {
@@ -1280,7 +1278,7 @@ select:focus {
 
 .dashboard-title p {
   margin: 8px 0 0;
-  color: #a5a8b3;
+  color: #616788;
   font-size: 15px;
 }
 
@@ -1294,7 +1292,7 @@ select:focus {
   border: 1px solid #2a2e38;
   border-radius: 10px;
 
-  background: #171a22;
+  background: #21252e;
   color: #ffffff;
 
   font-size: 14px;
