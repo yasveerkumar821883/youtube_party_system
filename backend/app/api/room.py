@@ -167,7 +167,7 @@ def get_room(
     if not participant:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="You are not a participant of this room",
+            detail="You are not a participant of this room.",
         )
 
     return room
