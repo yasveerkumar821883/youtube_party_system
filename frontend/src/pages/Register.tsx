@@ -46,7 +46,7 @@ export default function Register() {
         <form onSubmit={handleSubmit}>
           <input
             type="text"
-            placeholder="Username"
+            placeholder="Enter full name"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required

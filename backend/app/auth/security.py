@@ -7,14 +7,14 @@ from jose import JWTError, jwt
 from passlib.context import CryptContext
 
 
-# Load backend/.env
+
 BASE_DIR = Path(__file__).resolve().parents[2]
 ENV_FILE = BASE_DIR / ".env"
 
 load_dotenv(ENV_FILE)
 
 
-# JWT configuration
+
 SECRET_KEY = os.getenv("JWT_SECRET_KEY")
 
 if not SECRET_KEY:

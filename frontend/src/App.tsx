@@ -26,7 +26,7 @@ function App() {
           element={<Register />}
         />
 
-        {/* Join through unique room link */}
+        {/* Join through unique room code */}
         <Route
           path="/join/:roomCode"
           element={<JoinRoom />}

@@ -31,9 +31,8 @@ def generate_room_code(length: int = 6) -> str:
     )
 
 
-# =========================================================
+
 # CREATE ROOM
-# =========================================================
 
 @router.post(
     "/create",
@@ -76,9 +75,9 @@ def create_room(
     return new_room
 
 
-# =========================================================
+
 # JOIN ROOM
-# =========================================================
+
 
 @router.post(
     "/join",
@@ -112,11 +111,9 @@ def join_room(
         .first()
     )
 
-    # Already a member
     if existing_participant:
         return room
 
-    # New member joins as PARTICIPANT
     participant = RoomParticipant(
         room_id=room.id,
         user_id=current_user.id,
@@ -128,10 +125,7 @@ def join_room(
 
     return room
 
-
-# =========================================================
 # GET ROOM
-# =========================================================
 
 @router.get(
     "/{room_code}",
@@ -173,9 +167,7 @@ def get_room(
     return room
 
 
-# =========================================================
 # GET PARTICIPANTS
-# =========================================================
 
 @router.get(
     "/{room_code}/participants",
@@ -234,10 +226,7 @@ def get_participants(
         for participant, user in participants
     ]
 
-
-# =========================================================
 # ASSIGN ROLE
-# =========================================================
 
 @router.patch(
     "/{room_code}/participants/{user_id}/role",
@@ -267,7 +256,6 @@ def assign_role(
             detail="Room not found",
         )
 
-    # Check current user's membership
     current_participant = (
         db.query(RoomParticipant)
         .filter(
@@ -283,14 +271,12 @@ def assign_role(
             detail="You are not a participant of this room",
         )
 
-    # Only HOST can assign roles
     if current_participant.role != Role.HOST:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Only the host can assign roles",
         )
 
-    # Validate requested role
     try:
         new_role = Role(role_data.role.upper())
     except ValueError:
@@ -302,21 +288,17 @@ def assign_role(
             ),
         )
 
-    # HOST cannot be assigned through this endpoint
     if new_role == Role.HOST:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="HOST role cannot be assigned",
         )
 
-    # Prevent changing HOST role
     if user_id == room.host_id:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="The host role cannot be changed",
         )
-
-    # Find target participant
     target_participant = (
         db.query(RoomParticipant)
         .filter(
@@ -332,7 +314,7 @@ def assign_role(
             detail="Participant not found in this room",
         )
 
-    # Update role
+
     target_participant.role = new_role
 
     db.commit()
@@ -349,7 +331,7 @@ def assign_role(
         username=target_user.username,
         role=target_participant.role.value,
     )
-    # Validate requested role
+
     try:
         new_role = Role(role_data.role.upper())
     except ValueError:
@@ -361,14 +343,12 @@ def assign_role(
             ),
         )
 
-    # Prevent changing HOST role
     if user_id == room.host_id:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="The host role cannot be changed",
         )
 
-    # Find target participant
     target_participant = (
         db.query(RoomParticipant)
         .filter(
@@ -384,7 +364,6 @@ def assign_role(
             detail="Participant not found in this room",
         )
 
-    # Update role
     target_participant.role = new_role
 
     db.commit()

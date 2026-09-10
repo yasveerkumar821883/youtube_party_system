@@ -25,23 +25,13 @@ export default function WatchRoom() {
   const [chatInput, setChatInput] = useState("");
 
   // Default video while room data is loading
-  const [videoId, setVideoId] = useState("t7D-QXWKyi0");
-
+  const [videoId, setVideoId] = useState("Mc5AepRcXVU");
   const [youtubeUrl, setYoutubeUrl] = useState("");
   const [myRole, setMyRole] = useState("");
-
   const playerRef = useRef<any>(null);
   const socketRef = useRef<WebSocket | null>(null);
-
-  // Prevent remote Play/Pause/Video changes
-  // from being sent back to the server.
   const isRemoteUpdateRef = useRef(false);
-
-  // Prevent remote seek from being detected
-  // as a local seek.
   const isRemoteSeekRef = useRef(false);
-
-  // Last known player position.
   const lastTimeRef = useRef(0);
 
   // RBAC
@@ -146,7 +136,7 @@ export default function WatchRoom() {
     }
   }
 
-  // Load participants when room changes
+
 
   useEffect(() => {
     if (roomCode) {
@@ -154,7 +144,6 @@ export default function WatchRoom() {
     }
   }, [roomCode]);
 
-  // Load saved room/video
 
   useEffect(() => {
     async function loadRoom() {
@@ -209,7 +198,7 @@ export default function WatchRoom() {
     loadRoom();
   }, [roomCode]);
 
-  // Update participant role
+
 
   async function updateParticipantRole(
     userId: number,
@@ -222,8 +211,7 @@ export default function WatchRoom() {
       return;
     }
 
-    // Frontend protection.
-    // Backend also validates this permission.
+
     if (myRole !== "HOST") {
       setError(
         "Only the Host can assign participant roles"
@@ -279,8 +267,6 @@ export default function WatchRoom() {
       return;
     }
 
-    // Prevent callbacks from an old/cleaned-up
-    // WebSocket from changing the current UI state.
     let isActive = true;
 
     const wsBaseUrl =
@@ -306,9 +292,8 @@ export default function WatchRoom() {
       setError("");
     };
 
-    // ------------------------------------------------
     // Receive WebSocket messages
-    // ------------------------------------------------
+
 
     socket.onmessage = (event) => {
       if (!isActive) {
@@ -322,18 +307,17 @@ export default function WatchRoom() {
         message
       );
 
-      // ------------------------------------------------
       // Backend error
-      // ------------------------------------------------
+
 
       if (message.event === "error") {
         setError(message.message);
         return;
       }
 
-      // ------------------------------------------------
+
       // CHAT MESSAGE
-      // ------------------------------------------------
+
 
       if (message.event === "chat_message") {
         const newMessage: ChatMessage = {
@@ -358,10 +342,6 @@ export default function WatchRoom() {
         return;
       }
 
-      // ------------------------------------------------
-      // USER JOINED
-      // ------------------------------------------------
-
       if (message.event === "user_joined") {
         console.log(
           "👋 User joined:",
@@ -374,9 +354,6 @@ export default function WatchRoom() {
         return;
       }
 
-      // ------------------------------------------------
-      // USER LEFT
-      // ------------------------------------------------
 
       if (message.event === "user_left") {
         console.log(
@@ -390,18 +367,15 @@ export default function WatchRoom() {
         return;
       }
 
-      // ------------------------------------------------
-      // Everything below this point is YouTube
-      // playback handling.
-      // ------------------------------------------------
+
 
       if (!playerRef.current) {
         return;
       }
 
-      // ----------------------------------------------
+
       // REMOTE PLAY
-      // ----------------------------------------------
+
 
       if (message.event === "play") {
         console.log("▶️ Remote PLAY");
@@ -417,9 +391,9 @@ export default function WatchRoom() {
         }, 700);
       }
 
-      // ----------------------------------------------
+
       // REMOTE PAUSE
-      // ----------------------------------------------
+
 
       if (message.event === "pause") {
         console.log("⏸️ Remote PAUSE");
@@ -435,9 +409,8 @@ export default function WatchRoom() {
         }, 700);
       }
 
-      // ----------------------------------------------
-      // REMOTE SEEK
-      // ----------------------------------------------
+
+      // REMOTE SEE
 
       if (message.event === "seek") {
         const time = Number(message.time);
@@ -475,9 +448,8 @@ export default function WatchRoom() {
         }
       }
 
-      // ----------------------------------------------
+
       // REMOTE CHANGE VIDEO
-      // ----------------------------------------------
 
       if (
         message.event === "change_video"
@@ -512,9 +484,7 @@ export default function WatchRoom() {
       }
     };
 
-    // ------------------------------------------------
     // WebSocket error
-    // ------------------------------------------------
 
     socket.onerror = (event) => {
       console.error(
@@ -531,9 +501,8 @@ export default function WatchRoom() {
       );
     };
 
-    // ------------------------------------------------
     // WebSocket close
-    // ------------------------------------------------
+
 
     socket.onclose = () => {
       console.log(
@@ -547,9 +516,9 @@ export default function WatchRoom() {
       setConnected(false);
     };
 
-    // ------------------------------------------------
+
     // Cleanup
-    // ------------------------------------------------
+
 
     return () => {
       console.log(
@@ -573,9 +542,9 @@ export default function WatchRoom() {
     };
   }, [roomCode]);
 
-  // --------------------------------------------------
+
   // Send WebSocket event
-  // --------------------------------------------------
+
 
   function sendEvent(
     event:
@@ -616,9 +585,8 @@ export default function WatchRoom() {
     );
   }
 
-  // --------------------------------------------------
   // Send chat message
-  // --------------------------------------------------
+
 
   function sendChatMessage(
     event: FormEvent
@@ -660,9 +628,9 @@ export default function WatchRoom() {
     setChatInput("");
   }
 
-  // --------------------------------------------------
+
   // YouTube player ready
-  // --------------------------------------------------
+
 
   function handlePlayerReady(
     event: any
@@ -678,9 +646,9 @@ export default function WatchRoom() {
     );
   }
 
-  // --------------------------------------------------
+
   // YouTube state changes
-  // --------------------------------------------------
+
 
   function handlePlayerStateChange(
     event: any
@@ -701,9 +669,9 @@ export default function WatchRoom() {
       return;
     }
 
-    // ------------------------------------------------
+
     // Participant / Viewer protection
-    // ------------------------------------------------
+
 
     if (!canControl) {
       console.log(
@@ -725,9 +693,9 @@ export default function WatchRoom() {
       return;
     }
 
-    // ------------------------------------------------
+
     // Host / Moderator PLAY
-    // ------------------------------------------------
+
 
     if (event.data === 1) {
       console.log(
@@ -737,9 +705,9 @@ export default function WatchRoom() {
       sendEvent("play");
     }
 
-    // ------------------------------------------------
+
     // Host / Moderator PAUSE
-    // ------------------------------------------------
+
 
     if (event.data === 2) {
       console.log(
@@ -750,9 +718,9 @@ export default function WatchRoom() {
     }
   }
 
-  // --------------------------------------------------
+
   // SEEK detection
-  // --------------------------------------------------
+
 
   useEffect(() => {
     const interval =
@@ -778,9 +746,9 @@ export default function WatchRoom() {
           !isRemoteSeekRef.current &&
           !isRemoteUpdateRef.current
         ) {
-          // --------------------------------------------
+
           // Participant / Viewer cannot seek
-          // --------------------------------------------
+
 
           if (!canControl) {
             console.log(
@@ -802,9 +770,8 @@ export default function WatchRoom() {
             return;
           }
 
-          // --------------------------------------------
           // Host / Moderator can seek
-          // --------------------------------------------
+
 
           console.log(
             "⏩ Local SEEK detected:",
@@ -834,10 +801,6 @@ export default function WatchRoom() {
       clearInterval(interval);
     };
   }, [canControl, myRole]);
-
-  // --------------------------------------------------
-  // Extract YouTube video ID
-  // --------------------------------------------------
 
   function extractYouTubeVideoId(
     url: string
@@ -913,9 +876,7 @@ export default function WatchRoom() {
     }
   }
 
-  // --------------------------------------------------
   // Change video
-  // --------------------------------------------------
 
   function changeVideo(
     event: FormEvent
@@ -986,10 +947,7 @@ export default function WatchRoom() {
 
     setYoutubeUrl("");
   }
-
-  // --------------------------------------------------
-  // Player options
-  // --------------------------------------------------
+  -
 
   const playerOptions = {
     height: "450",
@@ -997,26 +955,13 @@ export default function WatchRoom() {
 
     playerVars: {
       autoplay: 0,
-
-      // Host / Moderator:
-      // YouTube controls visible.
-      //
-      // Participant / Viewer:
-      // YouTube controls hidden.
       controls: canControl ? 1 : 0,
-
-      // Disable keyboard controls for
-      // Participant / Viewer.
       disablekb: canControl ? 0 : 1,
 
       modestbranding: 1,
       rel: 0,
     },
   };
-
-  // --------------------------------------------------
-  // UI
-  // --------------------------------------------------
 
   return (
     <div className="watch-room">
@@ -1074,9 +1019,7 @@ export default function WatchRoom() {
 
       <main>
 
-        {/* ==========================================
-            YouTube Player
-        =========================================== */}
+        {/* YouTube Player */}
 
         <section>
 
@@ -1118,7 +1061,6 @@ export default function WatchRoom() {
             </form>
           )}
 
-          {/* Show status if role is still loading */}
 
           {!canControl && myRole === "" && (
             <p>
@@ -1161,16 +1103,9 @@ export default function WatchRoom() {
           </div>
 
         </section>
-
-        {/* ==========================================
-            Participants + Conversation
-        =========================================== */}
-
         <aside>
 
-          {/* ------------------------------------------
-              Participants
-          ------------------------------------------- */}
+          {/*  Participants  */}
 
           <section className="participants-section">
 
@@ -1278,9 +1213,8 @@ export default function WatchRoom() {
 
           </section>
 
-          {/* ------------------------------------------
-              Conversation
-          ------------------------------------------- */}
+
+          {/*  Conversation---- */}
 
           <section
             className="chat-section"

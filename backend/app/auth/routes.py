@@ -31,7 +31,7 @@ def register_user(
     user_data: UserRegister,
     db: Session = Depends(get_db),
 ):
-    # Check whether username already exists
+# Check whether username already exists
     existing_username = (
         db.query(User)
         .filter(User.username == user_data.username)
@@ -44,7 +44,7 @@ def register_user(
             detail="Username already exists",
         )
 
-    # Check whether email already exists
+# Check whether email already exists
     existing_email = (
         db.query(User)
         .filter(User.email == user_data.email)
@@ -57,7 +57,7 @@ def register_user(
             detail="Email already exists",
         )
 
-    # Create user
+# Create user
     new_user = User(
         username=user_data.username,
         email=user_data.email,
@@ -79,21 +79,20 @@ def login_user(
     user_data: UserLogin,
     db: Session = Depends(get_db),
 ):
-    # Find user by email
+
     user = (
         db.query(User)
         .filter(User.email == user_data.email)
         .first()
     )
 
-    # User doesn't exist
+
     if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid email or password",
         )
 
-    # Verify password
     if not verify_password(
         user_data.password,
         user.password_hash,
@@ -103,7 +102,7 @@ def login_user(
             detail="Invalid email or password",
         )
 
-    # Create JWT token
+
     access_token = create_access_token(
         data={
             "sub": str(user.id),

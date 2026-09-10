@@ -63,9 +63,6 @@ export default function Dashboard() {
   return (
     <div className="dashboard">
 
-      {/* =========================
-          HEADER
-      ========================== */}
       <header className="dashboard-header">
         <div className="dashboard-title">
           <h1>YOUTUBE WATCH PARTY</h1>
@@ -80,18 +77,12 @@ export default function Dashboard() {
         </button>
       </header>
 
-      {/* =========================
-          ERROR
-      ========================== */}
       {error && (
         <div className="error">
           {error}
         </div>
       )}
 
-      {/* =========================
-          CREATE / JOIN
-      ========================== */}
       <div className="dashboard-grid">
 
         {/* Create Room */}
@@ -148,9 +139,7 @@ export default function Dashboard() {
 
       </div>
 
-      {/* =========================
-          WEB3TASK FOOTER
-      ========================== */}
+      {/*   FOOTER    */}
       <footer className="site-footer">
         <div className="footer-container">
 
