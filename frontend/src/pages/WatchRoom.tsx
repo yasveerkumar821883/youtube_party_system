@@ -849,7 +849,6 @@ export default function WatchRoom() {
         const id =
           parsedUrl.pathname
             .split("/")[2];
-
         if (id) {
           return id;
         }
@@ -947,8 +946,6 @@ export default function WatchRoom() {
 
     setYoutubeUrl("");
   }
-  -
-
   const playerOptions = {
     height: "450",
     width: "800",
